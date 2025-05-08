@@ -14,7 +14,7 @@ export const registerUser = async (data) => {
 export const getOneUserServ = async (email) => {
   try {
     const user = await userModel.findOne({ email });
-    return user.password// Return the full user document
+    return user// Return the full user document
   } catch (error) {
     console.error(`Error while fetching user: ${error.message}`);
     return null;

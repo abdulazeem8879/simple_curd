@@ -2,27 +2,30 @@ import express from "express";
 import dotenv from "dotenv";
 import dbConnection from "./db/connect.js";
 import userRoute from "./routes/userRoutes.js";
-import bodyParser from "body-parser";
-// Initialize the app
-const app = express();
-app.use(bodyParser.json());
+
 dotenv.config();
+const app = express();
 const port = process.env.PORT || 3000;
 
 // Middleware
-app.use(express.urlencoded({ extended: false }));
 app.use(express.json());
+app.use(express.urlencoded({ extended: false }));
 
 // Connect to DB
-dbConnection(process.env.DBURL);
+(async () => {
+  try {
+    await dbConnection(process.env.DBURL);
+  } catch (error) {
+    console.error(error.message);
+    process.exit(1); // Exit the process if the database connection fails
+  }
+})();
 
 // Routes
 app.get("/", (req, res) => {
   res.send("API is running...");
 });
 app.use("/user", userRoute);
-
-// Optional: Default route
 
 // Start server
 app.listen(port, () => {
