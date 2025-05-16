@@ -2,6 +2,7 @@ import express from "express";
 import dotenv from "dotenv";
 import dbConnection from "./db/connect.js";
 import userRoute from "./routes/userRoutes.js";
+import cors from "cors";
 
 dotenv.config();
 const app = express();
@@ -10,6 +11,8 @@ const port = process.env.PORT || 3000;
 // Middleware
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
+app.use(cors({ origin: "*" })); // Or limit to your domain
+
 
 // Connect to DB
 (async () => {
